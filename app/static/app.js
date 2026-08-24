@@ -2,7 +2,31 @@ const displayNameInput = document.getElementById("display-name");
 const messageList = document.getElementById("message-list");
 const messageForm = document.getElementById("message-form");
 const messageInput = document.getElementById("message-input");
+const socket = new WebSocket(`ws://${window.location.host}/ws`);
 
+
+//Temporary Event handlers --------------------
+messageForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const displayName = displayNameInput.value.trim();
+    const messageText = messageInput.value.trim();
+
+    if (!displayName || !messageText) {
+        return;
+    }
+
+    const message = {
+        display_name: displayName,
+        message: messageText
+    };
+
+    socket.send(JSON.stringify(message));
+
+    messageInput.value = "";
+    messageInput.focus();
+});
+// --------------------------------------------
 
 async function loadMessages() {
     const response = await fetch("/messages");

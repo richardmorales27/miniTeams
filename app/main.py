@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -9,6 +9,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 messages = []
+connected_clients = []
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
@@ -56,3 +57,12 @@ def post_message(new_message: Message):
     messages.append(message)
 
     return message
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+
+    connected_clients.append(websocket)
+
+    while True:
+        data = await websocket.receive_text()
