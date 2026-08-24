@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MiniTeams</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+    <main class="chat-container">
+
+        <header class="chat-header">
+            <h1>MiniTeams</h1>
+            <p># general</p>
+        </header>
+
+        <!-- Display Name -->
+        <section class="display-name-section">
+
+            <label for="display-name">
+                Display Name
+            </label>
+
+            <input
+                type="text"
+                id="display-name"
+                placeholder="Enter your name"
+                maxlength="30"
+            >
+
+        </section>
+
+
+        <!-- Message List -->
+        <section
+            id="message-list"
+            class="message-list"
+        >
+
+            <p class="empty-message">
+                No messages yet.
+            </p>
+
+        </section>
+
+
+        <!-- Message Form -->
+        <form
+            id="message-form"
+            class="message-form"
+        >
+
+            <label
+                for="message-input"
+                class="visually-hidden"
+            >
+                Message
+            </label>
+
+            <input
+                type="text"
+                id="message-input"
+                placeholder="Type a message..."
+                maxlength="500"
+            >
+
+            <button type="submit">
+                Send
+            </button>
+
+        </form>
+
+    </main>
+
+    <script src="/static/app.js"></script>
+
+</body>
+
+</html>
