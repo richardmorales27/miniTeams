@@ -65,3 +65,8 @@ output "alb_dns_name" {
   description = "Public DNS name for the MiniTeams application"
   value       = aws_lb.miniteams.dns_name
 }
+
+output "miniteams_url" {
+  description = "Public URL for the MiniTeams application"
+  value       = "http://${aws_lb.miniteams.dns_name}"
+}
