@@ -1,14 +1,16 @@
 from pathlib import Path
-
-from fastapi import FastAPI
+import json
+from fastapi import FastAPI, WebSocket
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 
 app = FastAPI()
 
 messages = []
+connected_clients = []
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
@@ -56,3 +58,33 @@ def post_message(new_message: Message):
     messages.append(message)
 
     return message
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+
+    connected_clients.append(websocket)
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+
+            parsed_data = json.loads(data)
+
+            validated_message = Message(**parsed_data)
+
+            message = {
+                "display_name": validated_message.display_name,
+                "message": validated_message.message
+            }
+
+            messages.append(message)
+
+            message_json = json.dumps(message)
+
+            for client in connected_clients:
+                await client.send_text(message_json)
+
+    except WebSocketDisconnect:
+        connected_clients.remove(websocket)
+
