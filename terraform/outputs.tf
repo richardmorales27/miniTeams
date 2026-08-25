@@ -40,3 +40,23 @@ output "app_task_role_arn" {
   description = "MiniTeams application task role ARN"
   value       = aws_iam_role.app_task.arn
 }
+
+output "ecs_cluster_name" {
+  description = "MiniTeams ECS cluster name"
+  value       = aws_ecs_cluster.main.name
+}
+
+output "ecs_service_name" {
+  description = "MiniTeams ECS service name"
+  value       = aws_ecs_service.miniteams.name
+}
+
+output "ecs_task_definition_arn" {
+  description = "MiniTeams ECS task definition ARN"
+  value       = aws_ecs_task_definition.miniteams.arn
+}
+
+output "cloudwatch_log_group_name" {
+  description = "CloudWatch log group for MiniTeams"
+  value       = aws_cloudwatch_log_group.miniteams.name
+}
