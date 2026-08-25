@@ -5,6 +5,38 @@ const messageInput = document.getElementById("message-input");
 const socket = new WebSocket(`ws://${window.location.host}/ws`);
 
 
+socket.addEventListener("open", () => {
+    console.log("WebSocket connected");
+});
+
+socket.addEventListener("message", (event) => {
+    const message = JSON.parse(event.data);
+    const emptyMessage = messageList.querySelector(".empty-message");
+    if (emptyMessage) {emptyMessage.remove();}
+    const messageElement = document.createElement("div");
+
+    const nameElement = document.createElement("strong");
+    nameElement.textContent = message.display_name;
+
+    const textElement = document.createElement("p");
+    textElement.textContent = message.message;
+
+    messageElement.appendChild(nameElement);
+    messageElement.appendChild(textElement);
+
+    messageList.appendChild(messageElement);
+
+    messageList.scrollTop = messageList.scrollHeight;
+});
+
+socket.addEventListener("close", () => {
+    console.log("WebSocket disconnected");
+});
+
+socket.addEventListener("error", (error) => {
+    console.error("WebSocket error:", error);
+});
+
 //Temporary Event handlers --------------------
 messageForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -104,3 +136,4 @@ messageForm.addEventListener("submit", async (event) => {
 
 
 loadMessages();
+

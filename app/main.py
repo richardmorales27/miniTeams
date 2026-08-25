@@ -1,9 +1,10 @@
 from pathlib import Path
-
+import json
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
 
 app = FastAPI()
@@ -64,5 +65,26 @@ async def websocket_endpoint(websocket: WebSocket):
 
     connected_clients.append(websocket)
 
-    while True:
-        data = await websocket.receive_text()
+    try:
+        while True:
+            data = await websocket.receive_text()
+
+            parsed_data = json.loads(data)
+
+            validated_message = Message(**parsed_data)
+
+            message = {
+                "display_name": validated_message.display_name,
+                "message": validated_message.message
+            }
+
+            messages.append(message)
+
+            message_json = json.dumps(message)
+
+            for client in connected_clients:
+                await client.send_text(message_json)
+
+    except WebSocketDisconnect:
+        connected_clients.remove(websocket)
+
