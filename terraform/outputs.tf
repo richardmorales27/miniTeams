@@ -60,3 +60,8 @@ output "cloudwatch_log_group_name" {
   description = "CloudWatch log group for MiniTeams"
   value       = aws_cloudwatch_log_group.miniteams.name
 }
+
+output "alb_dns_name" {
+  description = "Public DNS name for the MiniTeams application"
+  value       = aws_lb.miniteams.dns_name
+}
