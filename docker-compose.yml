@@ -3,3 +3,13 @@ services:
     build: .
     ports:
       - "8000:8000"
+
+    environment:
+      AWS_REGION: us-east-1
+      DYNAMODB_TABLE_NAME: miniteams-messages
+      AWS_PROFILE: default
+
+    volumes:
+      - ~/.aws:/root/.aws:ro
+
+      
