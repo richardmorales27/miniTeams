@@ -45,7 +45,8 @@ data "aws_iam_policy_document" "dynamodb_access" {
     actions = [
       "dynamodb:PutItem",
       "dynamodb:Query",
-      "dynamodb:GetItem"
+      "dynamodb:GetItem",
+      "dynamodb:DescribeTable"
     ]
 
     resources = [
