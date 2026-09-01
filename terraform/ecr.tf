@@ -1,6 +1,7 @@
 resource "aws_ecr_repository" "miniteams" {
   name                 = var.project_name
   image_tag_mutability = "MUTABLE"
+  force_delete         = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -10,3 +11,4 @@ resource "aws_ecr_repository" "miniteams" {
     Name = "${var.project_name}-ecr"
   }
 }
+
